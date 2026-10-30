@@ -11,26 +11,42 @@
     <a asp-page="Create">Create New</a>
 </p>
 
+<form asp - page ="./Index" method ="get">
+ <div class ="form - actions no - color">
+ <p>
+ Find by Book Title / Author Name:
+ <input type ="text" name="SearchString" value =" @Model.CurrentFilter "
+/>
+ <input type ="submit" value ="Search" class ="btn btn - primary" /> |
+ <a asp - page ="./Index"> Back to full List </ a>
+ </p>
+ </div >
+</form >
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                Title
+                <a asp-page="./Index" asp-route-sortOrder="@Model.TitleSort">
+                    @Html.DisplayNameFor(model => model.Book[0].Title)
+                </a>
             </th>
             <th>
-                Author
+                <a asp-page="./Index" asp-route-sortOrder="@Model.AuthorSort">
+                    @Html.DisplayNameFor(model => model.Book[0].Author)
+                </a>
             </th>
             <th>
-                Price
+                @Html.DisplayNameFor(model => model.Book[0].Price)
             </th>
             <th>
-                Publishing Date
+                @Html.DisplayNameFor(model => model.Book[0].PublishingDate)
             </th>
             <th>
-                Publisher Name
+                @Html.DisplayNameFor(model => model.Book[0].Publisher)
             </th>
             <th>
-                Categories
+                @Html.DisplayNameFor(model => model.Book[0].BookCategories)
             </th>
             <th></th>
         </tr>
@@ -48,7 +64,7 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Author)
+                    @Html.DisplayFor(modelItem => item.Author.FullName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
@@ -83,21 +99,25 @@
 {
     <h3>Categories of Selected Book</h3>
     <table class="table">
-        <tr>
-            <th>Category Name</th>
-        </tr>
-        @foreach (var item in Model.BookD.Categories)
-        {
-            string selectedRow = "";
-            if (item.ID == Model.CategoryID)
-            {
-                selectedRow = "table-success";
-            }
-            <tr class="@selectedRow">
-                <td>
-                    @item.CategoryName
-                </td>
+        <thead>
+            <tr>
+                <th>Category Name</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.BookD.Categories)
+            {
+                string selectedRow = "";
+                if (item.ID == Model.CategoryID)
+                {
+                    selectedRow = "table-success";
+                }
+                <tr class="@selectedRow">
+                    <td>
+                        @item.CategoryName
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 }

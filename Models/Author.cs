@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Rece_Catalin_Lab2.Models
 {
     public class Author
@@ -5,7 +7,16 @@ namespace Rece_Catalin_Lab2.Models
         public int ID { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        
+
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+
         // Proprietate de navigare pentru relația cu Cărțile
         public ICollection<Book>? Books { get; set; }
     }
