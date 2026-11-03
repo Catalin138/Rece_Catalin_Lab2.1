@@ -6,4 +6,7 @@ public class Rece_Catalin_Lab2Context(DbContextOptions<Rece_Catalin_Lab2Context>
     public DbSet<Rece_Catalin_Lab2.Models.Publisher> Publisher { get; set; } = default!;
     public DbSet<Rece_Catalin_Lab2.Models.Author> Author { get; set; } = default!;
     public DbSet<Rece_Catalin_Lab2.Models.Category> Category { get; set; } = default!;
+    public DbSet<Rece_Catalin_Lab2.Models.Member> Member { get; set; } = default!;
+    public DbSet<Rece_Catalin_Lab2.Models.Borrowing> Borrowing { get; set; } = default!;
+
 }
