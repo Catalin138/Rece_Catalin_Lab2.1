@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -5,8 +6,11 @@ using Rece_Catalin_Lab2.Models;
 
 namespace Rece_Catalin_Lab2.Pages.BookPages;
 
+[Authorize(Roles = "Admin")]
+
 public class DeleteModel : PageModel
 {
+    
     private readonly Rece_Catalin_Lab2Context _context;
 
     public DeleteModel(Rece_Catalin_Lab2Context context)

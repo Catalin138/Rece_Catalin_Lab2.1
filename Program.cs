@@ -5,22 +5,40 @@ using Rece_Catalin_Lab2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // 1. Configurare pentru contextul principal al aplicației (Cărți, Autori, etc.)
 var connectionString = builder.Configuration.GetConnectionString("Rece_Catalin_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Rece_Catalin_Lab2Context' not found.");
 builder.Services.AddDbContext<Rece_Catalin_Lab2Context>(options =>
     options.UseSqlServer(connectionString));
 
 // 2. Configurare pentru contextul de Identity (Autentificare și Utilizatori)
-var identityConnectionString = builder.Configuration.GetConnectionString("LibraryIdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'LibraryIdentityContextConnection' not found.");
+var identityConnectionString = builder.Configuration.GetConnectionString("LibraryIdentityContext") ?? throw new InvalidOperationException("Connection string 'LibraryIdentityContextConnection' not found.");
 builder.Services.AddDbContext<LibraryIdentityContext>(options =>
     options.UseSqlServer(identityConnectionString));
 
 // Configurare Identity folosind ApplicationUser în loc de IdentityUser
 builder.Services.AddDefaultIdentity<Rece_Catalin_Lab2.Data.ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<LibraryIdentityContext>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+   policy.RequireRole("Admin"));
+});
+
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/BookPages");
+    options.Conventions.AllowAnonymousToPage("/BookPages/Index");
+    options.Conventions.AllowAnonymousToPage("/BookPages/Details");
+    options.Conventions.AuthorizeFolder("/MemberPages", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/PublisherPages", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/CategoryPages", "AdminPolicy");
+
+});
+
 
 var app = builder.Build();
 
